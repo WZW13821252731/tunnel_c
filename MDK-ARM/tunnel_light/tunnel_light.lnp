@@ -1,0 +1,24 @@
+--cpu Cortex-M3
+"tunnel_light\startup_stm32f103xe.o"
+"tunnel_light\main.o"
+"tunnel_light\stm32f1xx_it.o"
+"tunnel_light\stm32f1xx_hal_msp.o"
+"tunnel_light\stm32f1xx_hal_gpio_ex.o"
+"tunnel_light\stm32f1xx_hal_tim.o"
+"tunnel_light\stm32f1xx_hal_tim_ex.o"
+"tunnel_light\stm32f1xx_hal_uart.o"
+"tunnel_light\stm32f1xx_hal.o"
+"tunnel_light\stm32f1xx_hal_rcc.o"
+"tunnel_light\stm32f1xx_hal_rcc_ex.o"
+"tunnel_light\stm32f1xx_hal_gpio.o"
+"tunnel_light\stm32f1xx_hal_dma.o"
+"tunnel_light\stm32f1xx_hal_cortex.o"
+"tunnel_light\stm32f1xx_hal_pwr.o"
+"tunnel_light\stm32f1xx_hal_flash.o"
+"tunnel_light\stm32f1xx_hal_flash_ex.o"
+"tunnel_light\stm32f1xx_hal_exti.o"
+"tunnel_light\system_stm32f1xx.o"
+--library_type=microlib --strict --scatter "tunnel_light\tunnel_light.sct"
+--summary_stderr --info summarysizes --map --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list "tunnel_light.map" -o tunnel_light\tunnel_light.axf
