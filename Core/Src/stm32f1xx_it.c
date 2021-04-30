@@ -43,7 +43,7 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN PV */
-uint8_t uart2_buf[10]; 
+extern uint8_t rs1[8];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -211,6 +211,7 @@ void USART1_IRQHandler(void)
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */
+  
 
   /* USER CODE END USART1_IRQn 1 */
 }
@@ -225,7 +226,7 @@ void USART2_IRQHandler(void)
   /* USER CODE END USART2_IRQn 0 */
   HAL_UART_IRQHandler(&huart2);
   /* USER CODE BEGIN USART2_IRQn 1 */
-  HAL_UART_Receive(&huart2,uart2_buf,7,0xffff);
+ HAL_UART_Receive_IT(&huart2,rs1,7);//重新使能接受中断
   /* USER CODE END USART2_IRQn 1 */
 }
 

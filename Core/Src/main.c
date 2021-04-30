@@ -45,13 +45,14 @@ UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-extern uint8_t uart2_buf[10];
+uint8_t rs485buf[8] ={0X01,0X03,0X00,0X03,0X00,0X01,0X74,0X0A}; 
+uint8_t rs1[7];		// 用来接收串口2发送的数据
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-// static void MX_USART1_UART_Init(void);
+static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 int fputc(int ch,FILE *f)
@@ -74,7 +75,7 @@ int fputc(int ch,FILE *f)
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-  uint8_t  ch[10];
+  
 
   /* USER CODE END 1 */
 
@@ -96,18 +97,11 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  // MX_USART1_UART_Init();
+  MX_USART1_UART_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  printf("start");
-  ch[0]= 0x01;
-  ch[1]= 0x03;
-  ch[2]= 0x00;
-  ch[3]= 0x00;
-  ch[4]= 0x00;
-  ch[5]= 0x01;
-  ch[6]= 0x84;
-  ch[7]= 0x0A;
+  // HAL_UART_Receive_IT(&huart2,(uint8_t *)&rs1,7);
+  
 
 
 
@@ -117,16 +111,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    uint8_t i;
     HAL_Delay(10);
-    while(HAL_UART_Transmit(&huart2, (uint8_t*)ch, 8, 5000)!= HAL_OK);
-    // HAL_UART_Transmit(&huart2, (uint8_t*)ch, 8, 5000);
+    HAL_UART_Transmit(&huart2, (uint8_t*)&rs485buf, sizeof(rs485buf), 5000);
+
     HAL_Delay(100);
-    for(i =0;i<7;i++)
-    {
-      printf("0x%02x\t",uart2_buf[i]);
-    }
-    printf("\r\n");
+      printf("%02x\t\n",rs1[0]);
+			printf("%02x\t\n",rs1[1]);
+			printf("%02x\t\n",rs1[2]);
+			printf("%02x\t\n",rs1[3]);
+			printf("%02x\t\n",rs1[4]);
+			printf("%02x\t\n",rs1[5]);
+			printf("%02x\t\n",rs1[6]);
     
     /* USER CODE END WHILE */
 
@@ -227,7 +222,7 @@ static void MX_USART2_UART_Init(void)
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
   huart2.Init.Mode = UART_MODE_TX_RX;
-  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_RTS;
   huart2.Init.OverSampling = UART_OVERSAMPLING_16;
   if (HAL_UART_Init(&huart2) != HAL_OK)
   {
